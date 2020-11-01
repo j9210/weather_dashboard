@@ -3,9 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome CSS Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="./assets/styles.css">
     <title>Weather Dashboard</title>
 </head>
 <body>
+    <!-- Header -->
+    <header class="jumbotron">
+        <h1 class="title">Weather Dashboard</h1>
+    </header>
+
+    <!-- Grid layout-->
+    <main class="grid">
+
+        <!-- Search section -->
+        <div class="search-area">
+            <div class="search-form">
+                <h3>Search for a City:</h3>
+            </div>
+            <form id="search" class="search">
+                <input type="text" class="form-control" id="city-input" placeholder="Enter city name"/>
+                <button type="submit" class="btn" id="searchBtn"><i class="fas fa-search"></i></button>
+            </form>
+            <!-- Search History -->
+            <div class="search-history" id="history"></div>
+        </div>
+
+        <!-- Current Weather Display -->
+        <div class="currentWeather">
+            
+        </div>
+        <!-- 5 Day Forecast Display -->
+        <div class="forecast">
+            
+        </div>
+    </main>
     
+
+<script src="./assets/script.js"></script>
 </body>
 </html>

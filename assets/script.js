@@ -1,12 +1,12 @@
 // DOM Elements
 var cityInputEl = document.querySelector("#city-input");
 var searchBtnEl = document.querySelector("#searchBtn");
-var currenWeatherEl = document.querySelector("#currentWeather");
+var currentWeatherEl = document.querySelector("#currentWeather");
 var forecastEl = document.querySelector("#forecast");
 var searchFormEl = document.querySelector("#Search");
 var searchHistEl = document.querySelector("#history");
 
-let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
+//let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
 const apiKey = "250c7916cd74196dd34384d69323c6b6";
 
 
@@ -24,6 +24,7 @@ var formSubmitHandler = (event) => {
     } else {
         alert("Please enter a city.")
     }
+    localStorage.setItem("search",JSON.stringify(createSearchList))
 }
 
 // Create a search function that works on the searched 
@@ -82,9 +83,9 @@ var getForecast = (city) => {
 
 // displayCurrentWeather Function
 var displayCurrentWeather = (data,city) => {
-    while (currenWeatherEl.firstChild) {
-        currenWeatherEl.removeChild(todayEl.firstChild);
-    }
+    //while (currenWeatherEl.firstChild) {
+        //currenWeatherEl.removeChild(todayEl.firstChild);
+    
 
     // create var for city name, temp, humidity, windspeed, and UV
     var city = data.name
@@ -101,20 +102,20 @@ var displayCurrentWeather = (data,city) => {
     // find icon and attach to city and date
     icon.setAttribute("src", "http://openweathermap.org/img/wn" + data.weather[0].icon + ".png");
     nameEl.appendChild(icon);
-    currenWeatherEl.appendChild(nameEl);
+    currentWeatherEl.appendChild(nameEl);
 
     // DOM Els for temp, humidity, and windspd
     var tempEl = document.createElement("p");
     tempEl.textContent = "Temperature: " + temp + "\u00B0F";
-    currenWeatherEl.appendChild(tempEl);
+    currentWeatherEl.appendChild(tempEl);
 
     var humidityEl = document.createElement("p");
     humidityEl.textContent = "Humidity: " + humidity + "%";
-    currenWeatherEl.appendChild(humidityEl);
+    currentWeatherEl.appendChild(humidityEl);
 
     var windSpeedEl = document.createElement("p");
     windSpeedEl.textContent = "Wind Speed: " + wind + " MPH";
-    currenWeatherEl.appendChild(windSpeedEl);
+    currentWeatherEl.appendChild(windSpeedEl);
 
     // get lat and lon for UV index
     lat = data.coord.lat;
@@ -140,7 +141,7 @@ var displayCurrentWeather = (data,city) => {
                 $("#uv").className = "severe"
             }
 
-            currenWeatherEl.appendChild(uvEl);
+            currentWeatherEl.appendChild(uvEl);
         });
     })
 
@@ -148,15 +149,14 @@ var displayCurrentWeather = (data,city) => {
 
 // Display Infor for 5 day forecast
 var displayForecast = (data,city) => {
-    while (forecastEl.firstChild) {
-        forecastEl.removeChild(forecastEl.firstChild);
-    }
+    // clear old content
+
     // create counter to keep track of date
     j = 1;
-    for (i=3; i< 36; i+=8){
+    for (i = 3; i< 36; i+=8){
         // create variables for the date temp humidity and icon
-        date = moment().add(j,'day').formate("L");
-        icon = document.createElement("img");
+        var date = new Date();
+        var icon = document.createElement("img");
         icon.setAttribute("src","http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + ".png")
 
         temp = data.list[i].main.temp;
@@ -187,4 +187,4 @@ var displayForecast = (data,city) => {
 
 
 
-searchBtnEl.addEventListener("submit", formSubmitHandler);
+searchBtnEl.addEventListener("click", formSubmitHandler);

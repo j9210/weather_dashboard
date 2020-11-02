@@ -3,6 +3,9 @@
 
 }
 
+body {
+    background-color: blueviolet;
+}
 .title {
     text-align: center;
 }

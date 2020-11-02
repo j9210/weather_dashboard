@@ -24,13 +24,12 @@ var formSubmitHandler = (event) => {
     } else {
         alert("Please enter a city.")
     }
-    localStorage.setItem("search",JSON.stringify(createSearchList))
+    localStorage.setItem("search",JSON.stringify(createSearchList));
 }
 
 // Create a search function that works on the searched 
 var findCity = (event) => {
     var city = event.target.textContent;
-    console.log(city);
     getCurrentWeather(city);
     getForecast(city);
 }
@@ -155,7 +154,7 @@ var displayForecast = (data,city) => {
     j = 1;
     for (i = 3; i< 36; i+=8){
         // create variables for the date temp humidity and icon
-        var date = new Date();
+        var date = moment().add(j,'day').format("L");
         var icon = document.createElement("img");
         icon.setAttribute("src","http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + ".png")
 

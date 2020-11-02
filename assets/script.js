@@ -18,7 +18,7 @@ var formSubmitHandler = (event) => {
     // check the response if else
     if (city) {
         getCurrentWeather(city); 
-        getForecast(city);
+        generateForecast(city);
         createSearchList(city);
         cityInputEl.value = "";
     } else {
@@ -31,7 +31,7 @@ var formSubmitHandler = (event) => {
 var findCity = (event) => {
     var city = event.target.textContent;
     getCurrentWeather(city);
-    getForecast(city);
+    generateForecast(city);
 }
 
 
@@ -68,17 +68,7 @@ var createSearchList = (city) => {
      });
  }
 
-// Get forecast info
-var getForecast = (city) => {
-    var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=" + apiKey;
-    fetch(forecastUrl).then((response) => {
-        if (response.ok) {
-            response.json().then((data) => {
-                displayForecast(city);
-            })
-        }
-    })
-}
+
 
 // displayCurrentWeather Function
 var displayCurrentWeather = (data,city) => {
@@ -147,42 +137,51 @@ var displayCurrentWeather = (data,city) => {
 }
 
 // Display Infor for 5 day forecast
-var displayForecast = (data,city) => {
-    // clear old content
+var generateForecast = (city) => {
+   var forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=" + apiKey;
+   fetch(forecastUrl).then((result) => result.json())
+   .then((data) => {
+    var forecast = document.querySelectorAll(".forecast");
+    
+    for (i = 0; i < forecast.length; i++) {
+        let h1El = document.createElement("h1");
+        h1El.setAttribute("class", "forecast-h1");
+        h1El.textContent = "5 Day Forecast";
 
-    // create counter to keep track of date
-    j = 1;
-    for (i = 3; i< 36; i+=8){
-        // create variables for the date temp humidity and icon
-        var date = moment().add(j,'day').format("L");
-        var icon = document.createElement("img");
-        icon.setAttribute("src","http://openweathermap.org/img/wn/" + data.list[i].weather[0].icon + ".png")
+        forecast[i].appendChild(h1El);
+        forecast[i].innerHTML = "";
+        var forecastIndex = i * 8 + 4;
+        // console.log(fiveDayIndex);
+        var forecastDate = new Date(data.list[forecastIndex].dt * 1000);
+        var forecastYear = forecastDate.getFullYear();
+        var forecastMonth = forecastDate.getMonth() + 1;
+        var forecastDay = forecastDate.getDate();
+        
+        var forecastDateEl = document.createElement("p");
+        forecastDateEl.setAttribute("class", "forecast-p");
 
-        temp = data.list[i].main.temp;
-        humidity = data.list[i].main.humidity;
+        forecastDateEl.innerHTML = forecastMonth + "/" + forecastDay + "/" + forecastYear;
+        console.log(forecastDateEl);
+        forecast[i].append(forecastDateEl);
 
-        // create cards for 5 day forecast
-        cardEl = document.createElement("div");
-        cardEl.className= "card";
+        var forecastWeatherEl = document.createElement("img");
+        forecastWeatherEl.setAttribute("src","https://openweathermap.org/img/wn/" + data.list[forecastIndex].weather[0].icon + "@2x.png");
+        
+        forecast[i].append(forecastWeatherEl);
 
-        // DOM Els for the vars
-        dateEl = document.createElement("h6");
-        dateEl.textContent = date;
-        tempEl = document.createElement("p");
-        tempEl.textContent = "Temp: " + temp + "\u00B0F";
-        humidityEl = document.createElement("p")
-        humidityEl.textContent = "Humidity: " + humidity + "%";
+        var forecastTemperatureEl = document.createElement("p");
+        forecastTemperatureEl.setAttribute("class", "f-temp-p");
+        forecastTemperatureEl.innerHTML = "Temp: " + (data.list[forecastIndex].main.temp) + "\u00B0F";
+        forecast[i].append(forecastTemperatureEl);
 
-        //appendages
-        cardEl.appendChild(dateEl);
-        cardEl.appendChild(icon);
-        cardEl.appendChild(tempEl);
-        cardEl.appendChild(humidityEl);
-        forecastEl.appendChild(cardEl);
-
-        j++
+        var forecastHumidityEl = document.createElement("p");
+        forecastHumidityEl.setAttribute("class", "f-humid-p");
+        forecastHumidityEl.innerHTML = "Humidity: " + data.list[forecastIndex].main.humidity + "%";
+        forecast[i].append(forecastHumidityEl);
     }
-}
+
+   })
+};
 
 
 

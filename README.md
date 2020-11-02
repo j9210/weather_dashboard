@@ -11,7 +11,8 @@
 <li>FETCH API</li>
 </ul>
 
-<h2>URL deployed application</h2>
+<a href = "https://j9210.github.io/weather_dashboard/"><b>Deployed Application</b></a>
 
-<h2>URL GitHub Repository</h2>
+<a href = "https://github.com/j9210/weather_dashboard"><b>GitHub Depository</b></a>
+
   

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Font Awesome CSS Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/styles.css">
     <title>Weather Dashboard</title>
 </head>
@@ -15,32 +16,36 @@
     </header>
 
     <!-- Grid layout-->
-    <main class="grid">
-
-        <!-- Search section -->
-        <div class="search-area">
-            <div class="search-form">
-                <h3>Search for a City:</h3>
+    <main class= "container">
+        <div class="row">
+            <!-- Search section -->
+            <div class="search-area col-4">
+                <div class="search-form ">
+                    <h4>Search for a City:</h4>
+                </div>
+                <div id="search" class="search">
+                    <input type="text" class="form-control" id="city-input" placeholder="Enter city name"/>
+                    <button type="submit" class="btn" id="searchBtn"><i class="fas fa-search"></i></button>
+                </div>
+                <!-- Search History -->
+                <ul class="search-history" id="history"></ul>
             </div>
-            <form id="search" class="search">
-                <input type="text" class="form-control" id="city-input" placeholder="Enter city name"/>
-                <button type="submit" class="btn" id="searchBtn"><i class="fas fa-search"></i></button>
-            </form>
-            <!-- Search History -->
-            <div class="search-history" id="history"></div>
-        </div>
-
-        <!-- Current Weather Display -->
-        <div id ="currentWeather">
-            
-        </div>
-        <!-- 5 Day Forecast Display -->
-        <div id="forecast">
-            <div class="forecast"></div>
-            <div class="forecast"></div>
-            <div class="forecast"></div>
-            <div class="forecast"></div>
-            <div class="forecast"></div>
+            <div class="col-8">
+            <div class="container">
+            <!-- Current Weather Display -->
+            <div id ="currentWeather" class="row">
+                
+            </div>
+            <!-- 5 Day Forecast Display -->
+            <div id="forecast" class="row">
+                <div class="forecast"></div>
+                <div class="forecast"></div>
+                <div class="forecast"></div>
+                <div class="forecast"></div>
+                <div class="forecast"></div>
+            </div>
+          </div>
+          </div>
         </div>
     </main>
  

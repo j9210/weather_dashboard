@@ -5,8 +5,10 @@ var currentWeatherEl = document.querySelector("#currentWeather");
 var forecastEl = document.querySelector("#forecast");
 var searchFormEl = document.querySelector("#Search");
 var searchHistEl = document.querySelector("#history");
+var historyArr = JSON.parse(localStorage.getItem("history")) || [];
 
-//let searchHistory = JSON.parse(localStorage.getItem("search")) || [];
+
+
 const apiKey = "250c7916cd74196dd34384d69323c6b6";
 
 
@@ -24,42 +26,42 @@ var formSubmitHandler = (event) => {
     } else {
         alert("Please enter a city.")
     }
-    localStorage.setItem("search",JSON.stringify(createSearchList));
+    console.log(localStorage.searchFormEl);
 }
 
-// Create a search function that works on the searched 
-var findCity = (event) => {
-    var city = event.target.textContent;
-    getCurrentWeather(city);
-    generateForecast(city);
-}
+// Create a search function that works on the searched
+$(".search-history").on("click", "li", function(){
+    console.log($(this).text())
+    getCurrentWeather($(this).text());
+    generateForecast($(this).text());
+}) 
 
 
 var createSearchList = (city) => {
-    // Check if city already listed
-    children = searchHistEl.children
-    for (i=0; i < children.length; i++) {
-        // break function if true
-        if (city === children[i].textContent) {
-            return;
-        }
-    }
-    //add searched city to search history div
-    var cityEl = document.createElement("button");
-    cityEl.textContent = city;
-    searchHistEl.appendChild(cityEl);
-
-    city.onclick = findCity;
+    var list = $("#history");
+    var item = $("<li>").addClass("list-group-item");
+    item.text(city);
+    list.append(item)
 }
+
+// save search list
+// var saveSearchList = 
 // Get City Weather Info
  var getCurrentWeather = (city) => {
      console.log(city);
      var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey;
      fetch(apiUrl).then((response) => {
+            console.log(historyArr)
+        if(historyArr.indexOf(city) === -1){
+            
+            historyArr.push(city);
+            localStorage.setItem("history", JSON.stringify(historyArr))
+
+        }
+
          if (response.ok) {
              response.json().then((data) => {
                  displayCurrentWeather(data, city);
-                 createSearchList(city);
             
              })
          } else {
@@ -72,10 +74,7 @@ var createSearchList = (city) => {
 
 // displayCurrentWeather Function
 var displayCurrentWeather = (data,city) => {
-    //while (currenWeatherEl.firstChild) {
-        //currenWeatherEl.removeChild(todayEl.firstChild);
-    
-
+    currentWeatherEl.innerHTML = "";
     // create var for city name, temp, humidity, windspeed, and UV
     var city = data.name
     var temp = data.main.temp;
@@ -94,15 +93,15 @@ var displayCurrentWeather = (data,city) => {
     currentWeatherEl.appendChild(nameEl);
 
     // DOM Els for temp, humidity, and windspd
-    var tempEl = document.createElement("p");
+    var tempEl = document.createElement("h3");
     tempEl.textContent = "Temperature: " + temp + "\u00B0F";
     currentWeatherEl.appendChild(tempEl);
 
-    var humidityEl = document.createElement("p");
+    var humidityEl = document.createElement("h3");
     humidityEl.textContent = "Humidity: " + humidity + "%";
     currentWeatherEl.appendChild(humidityEl);
 
-    var windSpeedEl = document.createElement("p");
+    var windSpeedEl = document.createElement("h3");
     windSpeedEl.textContent = "Wind Speed: " + wind + " MPH";
     currentWeatherEl.appendChild(windSpeedEl);
 
@@ -115,7 +114,7 @@ var displayCurrentWeather = (data,city) => {
     fetch(uvUrl).then((response2) => {
         response2.json().then((data) => {
             var uv = data.value;
-            var uvEl = document.createElement("p");
+            var uvEl = document.createElement("h3");
             uvEl.innerHTML = "<p>UV Index: <span>" + uv + "</span></p>";
 
             // set favorable, moderate, severe rating
@@ -183,6 +182,9 @@ var generateForecast = (city) => {
    })
 };
 
-
+for (let i = 0; i < historyArr.length; i++) {
+    createSearchList(historyArr[i])
+    
+}
 
 searchBtnEl.addEventListener("click", formSubmitHandler);
